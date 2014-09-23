@@ -1,6 +1,5 @@
 #include "FlashingLight.h"
 #include <Arduino.h>
-#include "const.h"
 
 FlashingLight::FlashingLight(int pin, int intensity, int flashingTime, int activePeriods, int skipPeriods) {
 	_pin = pin;
@@ -10,7 +9,7 @@ FlashingLight::FlashingLight(int pin, int intensity, int flashingTime, int activ
 	_skipPeriods = skipPeriods;
 	
 	__onOffPeriod = Period();
-	__intensityPeriod = Period();
+//	__intensityPeriod = Period();
 }
 
 //void FlashingLight::togglePeriod() {
@@ -20,19 +19,20 @@ FlashingLight::FlashingLight(int pin, int intensity, int flashingTime, int activ
 
 void FlashingLight::init() {
 	pinMode(_pin, OUTPUT);
-	__status = OFF;
+	__status = false;
 
 	__onOffPeriod.init(_flashingTime);
-	__intensityPeriod.init(_intensity);
+//	__intensityPeriod.init(_intensity);
 }
 
 void FlashingLight::update() {
 //	Serial.print("update\n");
 	__onOffPeriod.update();
-	__intensityPeriod.update();
+//	__intensityPeriod.update();
 
-	Serial.print(String(String(__status) + " - " + String(__onOffPeriod.status()) + " - " + String(__intensityPeriod.status()) + "\n"));
-	if (__status && __onOffPeriod.status() && __intensityPeriod.status()) {
+//	Serial.print(String(String(__status) + " - " + String(__onOffPeriod.status()) + " - " + String(__intensityPeriod.status()) + "\n"));
+//	if (__status && __onOffPeriod.status() && __intensityPeriod.status()) {
+	if (__status && __onOffPeriod.status()) {
 		updateLight(HIGH);
 	} else {
 		updateLight(LOW);
@@ -51,6 +51,6 @@ void FlashingLight::turnOn() {
 };
 
 void FlashingLight::turnOff() {
-	__status = OFF;
+	__status = false;
 	update();
 };
