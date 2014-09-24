@@ -7,9 +7,6 @@ FlashingLight::FlashingLight(int pin, int intensity, int flashingTime, int activ
 	_flashingTime = flashingTime;
 	_activePeriods = activePeriods;
 	_skipPeriods = skipPeriods;
-	
-	__onOffPeriod = Period();
-//	__intensityPeriod = Period();
 }
 
 //void FlashingLight::togglePeriod() {
@@ -21,18 +18,21 @@ void FlashingLight::init() {
 	pinMode(_pin, OUTPUT);
 	__status = false;
 
+	__onOffPeriod = Period();
+	__intensityPeriod = Period();
+
 	__onOffPeriod.init(_flashingTime);
-//	__intensityPeriod.init(_intensity);
+	__intensityPeriod.init(_intensity);
 }
 
 void FlashingLight::update() {
 //	Serial.print("update\n");
 	__onOffPeriod.update();
-//	__intensityPeriod.update();
+	__intensityPeriod.update();
 
 //	Serial.print(String(String(__status) + " - " + String(__onOffPeriod.status()) + " - " + String(__intensityPeriod.status()) + "\n"));
-//	if (__status && __onOffPeriod.status() && __intensityPeriod.status()) {
-	if (__status && __onOffPeriod.status()) {
+	if (__status && __onOffPeriod.status() && __intensityPeriod.status()) {
+//	if (__status && __onOffPeriod.status()) {
 		updateLight(HIGH);
 	} else {
 		updateLight(LOW);

@@ -1,6 +1,6 @@
 #include "FlashingLight.h"
 
-FlashingLight	greenLight ( 8,  100, 1000, 3, 1);
+FlashingLight	greenLight ( 8,  100,  700, 3, 1);
 FlashingLight	yellowLight( 7,  100,  500, 3, 1);
 FlashingLight	redLight   ( 6,  100,  700, 3, 1);
 

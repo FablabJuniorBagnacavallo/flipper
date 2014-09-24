@@ -28,7 +28,7 @@ class FlashingLight {
 		void updateLight(int status);
 		
 		Period	__onOffPeriod;
-//		Period	__intensityPeriod;
+		Period	__intensityPeriod;
 };
 
 #endif
