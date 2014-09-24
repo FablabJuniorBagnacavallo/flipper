@@ -4,7 +4,7 @@
 
 class FlashingLight {
 	public:
-		FlashingLight(int pin, int intensity, int flashingTime, int activePeriods, int skipPeriods);
+		FlashingLight(int pin, int flashingTime, int intensity, int activePeriods, int skipPeriods);
 		void init();
 		void turnOn();
 		void turnOff();
@@ -24,11 +24,11 @@ class FlashingLight {
 
 		int	__periodStatus;
 		int	__periodStartTime;
+		int	__latestValueSet;
 
-		void updateLight(int status);
-		
+		void updateLight(int value);
+		boolean isActiveCycle(int cycle);
 		Period	__onOffPeriod;
-		Period	__intensityPeriod;
 };
 
 #endif

@@ -1,12 +1,13 @@
 #include "FlashingLight.h"
 #include <Arduino.h>
 
-FlashingLight::FlashingLight(int pin, int intensity, int flashingTime, int activePeriods, int skipPeriods) {
+FlashingLight::FlashingLight(int pin, int flashingTime, int intensity, int activePeriods, int skipPeriods) {
 	_pin = pin;
 	_intensity = intensity;
 	_flashingTime = flashingTime;
 	_activePeriods = activePeriods;
 	_skipPeriods = skipPeriods;
+	__latestValueSet = 0;
 }
 
 //void FlashingLight::togglePeriod() {
@@ -19,28 +20,32 @@ void FlashingLight::init() {
 	__status = false;
 
 	__onOffPeriod = Period();
-	__intensityPeriod = Period();
-
 	__onOffPeriod.init(_flashingTime);
-	__intensityPeriod.init(_intensity);
+}
+
+boolean FlashingLight::isActiveCycle(int cycle) {
+	int step;
+	
+	step = cycle % (_activePeriods + _skipPeriods);
+	return (step < _activePeriods);
+}
+
+void FlashingLight::updateLight(int value) {
+	if (__latestValueSet != value) {
+		__latestValueSet = value;
+		analogWrite(_pin, value);
+	}
 }
 
 void FlashingLight::update() {
 //	Serial.print("update\n");
 	__onOffPeriod.update();
-	__intensityPeriod.update();
 
-//	Serial.print(String(String(__status) + " - " + String(__onOffPeriod.status()) + " - " + String(__intensityPeriod.status()) + "\n"));
-	if (__status && __onOffPeriod.status() && __intensityPeriod.status()) {
-//	if (__status && __onOffPeriod.status()) {
-		updateLight(HIGH);
+	if (__status && __onOffPeriod.status() && isActiveCycle(__onOffPeriod.cycle())) {
+		updateLight(_intensity);
 	} else {
-		updateLight(LOW);
+		updateLight(0);
 	}
-}
-
-void FlashingLight::updateLight(int status) {
-	digitalWrite(_pin, status);
 }
 
 void FlashingLight::turnOn() {
