@@ -17,13 +17,8 @@ class FlashingLight {
 		int	_activePeriods;
 		int	_skipPeriods;
 
-		int	__periodCount;
-		int	__startTime;
-		int	__startPeriod;
 		boolean	__status;
 
-		int	__periodStatus;
-		int	__periodStartTime;
 		int	__latestValueSet;
 
 		void updateLight(int value);

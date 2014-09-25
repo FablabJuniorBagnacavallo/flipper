@@ -50,8 +50,6 @@ void FlashingLight::update() {
 
 void FlashingLight::turnOn() {
 	__status = true;
-	__periodCount = 0;
-	__startTime = millis();
 	update();
 };
 
