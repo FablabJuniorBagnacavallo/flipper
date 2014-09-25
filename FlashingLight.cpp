@@ -16,7 +16,6 @@ FlashingLight::FlashingLight(int pin, int flashingTime, int intensity, int activ
 //}
 
 void FlashingLight::init() {
-	pinMode(_pin, OUTPUT);
 	__status = false;
 
 	__onOffPeriod = Period();
@@ -49,6 +48,7 @@ void FlashingLight::update() {
 }
 
 void FlashingLight::turnOn() {
+	pinMode(_pin, OUTPUT);
 	__status = true;
 	update();
 };
