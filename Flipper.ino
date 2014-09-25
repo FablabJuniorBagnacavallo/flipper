@@ -16,7 +16,7 @@ const int SPEAKER_PIN =		11;
 const int MOTOR_PIN =		 4;
 
 const int GATE_THRESHOLD = 50;
-const int SELECTION_DURATION = 2500;
+const int SELECTION_DURATION = 900;
 
 int selection = NO_SELECTION;
 unsigned long selectionTime;
