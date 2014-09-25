@@ -13,13 +13,17 @@ const int YELLOW_GATE_PIN =	A1;
 const int RED_GATE_PIN =	A2;
 
 const int SPEAKER_PIN =		11;
-const int MOTOR_PIN =		 4;
+const int MOTOR_PIN =		12;
 
 const int GATE_THRESHOLD = 50;
 const int SELECTION_DURATION = 900;
+const int MOTOR_DURATION = 10 * 1000;
 
 int selection = NO_SELECTION;
 unsigned long selectionTime;
+
+boolean motorStatus = false;
+unsigned long motorStartTime;
 
 
 //--------------------------------------------------------
@@ -81,10 +85,6 @@ void turnOnSelection(int selectedIndex) {
 	lightsSELECTED[selectedIndex].turnOn();
 }
 
-void playSound() {
-	startPlayback(sample, sizeof(sample));
-}
-
 void turnOffSelection(int selectedIndex) {
 //	Serial.print("OFF: " + String(selectedIndex) + "\n");
 	stopPlayback();
@@ -92,6 +92,21 @@ void turnOffSelection(int selectedIndex) {
 	for (int i=0; i<3; i++) {
 		lights[i].turnOn();
 	}
+}
+
+void startMotor() {
+	digitalWrite(MOTOR_PIN, HIGH);
+	motorStatus = true;
+	motorStartTime = millis();
+}
+
+void stopMotor() {
+	digitalWrite(MOTOR_PIN, LOW);
+	motorStatus = false;
+}
+
+void playSound() {
+	startPlayback(sample, sizeof(sample));
 }
 
 void loop () {
@@ -113,8 +128,14 @@ void loop () {
 		}
 	} else if ((now - selectionTime) > SELECTION_DURATION) {
 		turnOffSelection(selection);
+		startMotor();
 		selection = NO_SELECTION;
 	}
+	
+	if (motorStatus && ((now - motorStartTime) > MOTOR_DURATION)) {
+		stopMotor();
+	}
+
 	delay(10);
 }
 
